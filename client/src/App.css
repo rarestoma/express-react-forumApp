@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Override html base font size */
+html {
+  @apply text-[12px] lg:text-[13px] font-sans antialiased;
+}
