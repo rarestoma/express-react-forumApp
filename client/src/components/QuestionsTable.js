@@ -162,7 +162,7 @@ const QuestionsTable = () => {
       <div className="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent">
         <h3 className="flex flex-col items-start justify-center m-2 ml-0 font-medium text-xl/tight text-dark">
           <span className="mr-3 font-semibold text-dark">
-            Questions {questions.records.length}
+            Questions
           </span>
         </h3>
         <div className="relative flex flex-wrap items-center my-2">
