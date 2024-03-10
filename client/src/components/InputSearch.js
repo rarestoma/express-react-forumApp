@@ -1,33 +1,42 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useFuzzyQuestions } from "../queries/questions";
 
 const InputSearch = () => {
   const [inputValue, setInputValue] = useState("");
   const [searchInput, setSearchInput] = useState("");
+  const {
+    data: questions,
+    isLoading,
+    refetch,
+  } = useFuzzyQuestions(searchInput);
+  const typingTimeout = useRef(null);
 
-  const { data: questions, isLoading } = useFuzzyQuestions(searchInput);
-
-  const FuzzySearch = (event) => {
+  const handleInputChange = (event) => {
     const searchValue = event.target.value;
     setInputValue(searchValue);
-    const delaySearch = setTimeout(() => {
-      setSearchInput(inputValue);
-    }, 500);
 
-    return () => {
-      clearTimeout(delaySearch);
-    };
+    // Clear the previous typing timeout
+    clearTimeout(typingTimeout.current);
+
+    // Set a new typing timeout
+    typingTimeout.current = setTimeout(() => {
+      setSearchInput(searchValue);
+    }, 500);
   };
 
-  // useEffect(() => {
-  //   const delaySearch = setTimeout(() => {
-  //     setSearchInput(inputValue);
-  //   }, 500);
+  useEffect(() => {
+    // Trigger the query when searchInput changes
+    if (searchInput !== "") {
+      refetch(searchInput);
+    }
+  }, [searchInput, refetch]);
 
-  //   return () => {
-  //     clearTimeout(delaySearch);
-  //   };
-  // }, [inputValue]);
+  useEffect(() => {
+    // Log when new questions are fetched
+    if (questions) {
+      console.log("New set of questions:", questions);
+    }
+  }, [questions]);
 
   return (
     <div className="relative my-1">
@@ -56,9 +65,9 @@ const InputSearch = () => {
         className="placeholder:text-secondary-dark pr-4 pl-12 text-stone-500 bg-white border border-solid border-stone-200 text-[0.95rem] block w-[150px] py-3 font-medium leading-normal bg-clip-padding appearance-none rounded-2xl focus:border-secondary-dark outline-none"
         placeholder="Search questions"
         type="text"
-        disabled={isLoading ? true : false}
+        disabled={isLoading}
         value={inputValue}
-        onChange={FuzzySearch}
+        onChange={handleInputChange}
       />
     </div>
   );
