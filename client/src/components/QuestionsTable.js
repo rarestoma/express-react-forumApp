@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDeleteQuestion, useQuestions } from "../queries/questions";
+import InputSearch from "./InputSearch";
 
 // Table row for each question
 const QuestionRow = ({
@@ -161,9 +162,7 @@ const QuestionsTable = () => {
       {/* card header */}
       <div className="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent">
         <h3 className="flex flex-col items-start justify-center m-2 ml-0 font-medium text-xl/tight text-dark">
-          <span className="mr-3 font-semibold text-dark">
-            Questions
-          </span>
+          <span className="mr-3 font-semibold text-dark">Questions</span>
         </h3>
         <div className="relative flex flex-wrap items-center my-2">
           <div className="flex flex-wrap items-center justify-between gap-4">
@@ -203,12 +202,7 @@ const QuestionsTable = () => {
                   />
                 </svg>
               </span>
-              <input
-                id="table-search"
-                className="placeholder:text-secondary-dark pr-4 pl-12 text-stone-500 bg-white border border-solid border-stone-200 text-[0.95rem] block w-[150px] py-3 font-medium leading-normal bg-clip-padding appearance-none rounded-2xl focus:border-secondary-dark outline-none"
-                placeholder="Search questions"
-                type="text"
-              />
+              <InputSearch />
             </div>
           </div>
         </div>
