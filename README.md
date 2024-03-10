@@ -2,7 +2,7 @@
 
 #### Tools:
 
-BackEnd: NodeJS + Express + Airtable
+BackEnd: NodeJS + Express + Airtable |
 FrontEnd: React + React Query + Tailwind CSS
 
 #### Functionalities
