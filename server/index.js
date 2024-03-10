@@ -83,16 +83,24 @@ app.post("/create", (req, res) => {
 
 // Update a question
 app.post("/update", (req, res) => {
-  console.log("de aici vine: ", req.body);
-
   var datain = req.body;
 
   var payload = {
     records: [
       {
-        id: "rec1wLijTDe5NuDmU",
+        id: datain.id.id,
         fields: {
-          Question: datain["Question"],
+          _recordId: "rec7kDfiPkvXpNbl1",
+          "Company Name": "Test Company Limited",
+          Question: datain.id["Question"],
+          Answer:
+            "For the information uploaded onto the platform (Files & Media), Test Company acts as the processor, meaning that we don’t own the information the Cust...",
+          _companyId: 63297,
+          "Created At": "2024-01-26 09:23",
+          "Updated At": "26/1/2024 9:24am",
+          "Updated By": "founders+alex@privasee.io",
+          "Created By": "founders+alex@privasee.io",
+          "Assigned To": "manuel@testcompany.com",
         },
       },
     ],
