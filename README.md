@@ -15,3 +15,7 @@ FrontEnd: React + React Query + Tailwind CSS
 
 - add .env file that contains airtableapikey and
   airtablebaseid
+
+#### Demo
+
+https://www.youtube.com/watch?v=gdCEQnA0FxY
