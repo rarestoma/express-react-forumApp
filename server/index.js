@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const fetch = require("node-fetch");
 const parser = require("body-parser");
+const Fuse = require("fuse.js");
 
 require("dotenv").config();
 
@@ -43,8 +44,6 @@ app.get("/questions", (req, res) => {
 // Post a new question
 app.post("/create", (req, res) => {
   let datain = req.body.questionData;
-
-  console.log(datain);
 
   let payload = {
     records: [
@@ -142,4 +141,40 @@ app.post("/delete", (req, res) => {
 // Listen port console
 app.listen(port, () => {
   console.log("server listening on port 8080");
+});
+
+// Fuzzy search implementation
+app.post("/fuzzyQuestions", (req, res) => {
+  fetch(
+    `https://api.airtable.com/v0/${AIRTABLEBASEID}/${AIRTABLETABLENAME}?pageSize=100`,
+    {
+      headers: { Authorization: `Bearer ${AIRTABLEAPI}` },
+    }
+  )
+    .then((response) => response.json())
+    .then((result) => {
+      // Extract question and answer columns from Airtable data
+      const questions = result.records.map((record) => ({
+        question: record.fields["Question"],
+        answer: record.fields["Answer"],
+      }));
+
+      // Perform fuzzy search
+      const options = {
+        keys: ["question", "answer"],
+        threshold: 0.4,
+      };
+
+      const fuse = new Fuse(questions, options);
+      const fuzzyQuery = req.body.questionData;
+
+      // Perform fuzzy search
+      const searchResults = fuse.search(fuzzyQuery);
+
+      res.json(searchResults);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+    });
 });
