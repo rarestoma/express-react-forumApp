@@ -44,6 +44,36 @@ export function useCreateQuestion() {
   return { createQuestion, isLoading };
 }
 
+// Update a question
+export function useUpdateQuestion() {
+  const queryClient = useQueryClient();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const updateQuestion = async (questionId) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${AppConfig.serverUrl}/update`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: questionId }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete question");
+      }
+      // Invalidate the 'questions' query after the change
+      queryClient.invalidateQueries("questions");
+      setIsLoading(false);
+      return response.json();
+    } catch (error) {
+      throw new Error("Failed to delete question:", error);
+    }
+  };
+
+  return { updateQuestion, isLoading };
+}
+
 // Delete a question
 export function useDeleteQuestion() {
   const queryClient = useQueryClient();
@@ -72,4 +102,21 @@ export function useDeleteQuestion() {
   };
 
   return { deleteQuestion, isLoading };
+}
+
+// Fuzzy search for questions
+export function useFuzzyQuestions(questionData) {
+  return useQuery({
+    queryKey: ["fuzzyQuestions"],
+    queryFn: async () => {
+      const response = await fetch(`${AppConfig.serverUrl}/fuzzyQuestions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ questionData }),
+      });
+      return response.json();
+    },
+  });
 }
