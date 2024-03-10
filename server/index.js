@@ -83,23 +83,23 @@ app.post("/create", (req, res) => {
 
 // Update a question
 app.post("/update", (req, res) => {
-  console.log(req.body);
+  console.log("de aici vine: ", req.body);
 
   var datain = req.body;
 
   var payload = {
     records: [
       {
-        id: "recV99145Ud2yJixY",
+        id: "rec1wLijTDe5NuDmU",
         fields: {
-          "Company Name": "Rares Company",
+          Question: datain["Question"],
         },
       },
     ],
   };
 
   fetch(`https://api.airtable.com/v0/${AIRTABLEBASEID}/${AIRTABLETABLENAME}`, {
-    method: "patch", // make sure it is a "PATCH request"
+    method: "patch",
     body: JSON.stringify(payload),
     headers: {
       Authorization: `Bearer ${AIRTABLEAPI}`, // API key
